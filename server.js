@@ -1,6 +1,6 @@
 const express = require("express");
 const logger = require("morgan");
-const { db } = require("./models/stats");
+// const { db } = require("./models/stats");
 const routes = require("./routes");
 const htmlRoutes = require("./htmlRoutes");
 const PORT = process.env.PORT || 3000;

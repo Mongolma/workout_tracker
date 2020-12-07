@@ -2,16 +2,13 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const AddSchema = new Schema({
-    name: {
-        type: String,
-        unique: true
+   day: {
+        type: Number,
+        default: new Date(),
       },
-      stats: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: "Stats"
-        }
-      ]
+    exercises: Array,
+}, {
+  versionKey: false,
 });
 
 const Add = mongoose.model("Add", AddSchema);
