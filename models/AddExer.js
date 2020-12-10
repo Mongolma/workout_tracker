@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+let mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const AddSchema = new Schema({
@@ -7,8 +7,6 @@ const AddSchema = new Schema({
         default: new Date(),
       },
     exercises: Array,
-}, {
-  versionKey: false,
 });
 
 const Add = mongoose.model("Add", AddSchema);
