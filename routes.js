@@ -1,12 +1,26 @@
 const express = require("express");
-const db = require("./models");
 const router = express.Router();
+
+let mongoose = require("mongoose");
+let db = require("./models");
+mongoose.connect("mongodb://localhost/workout", {
+  useNewUrlParser: true,
+  useFindAndModify: false
+});
+
+//get last record
+router.get("/api/workouts", ({ body }, res) => {
+    db.Workout.find({}).then((dbWorkouts => {
+      res.json(dbWorkouts);  
+    })).catch(err => {
+        res.json(err);
+    });
+});
 
 //Add exercises to a previous workout plan.
 router.put("/api/workouts/:id", function({ body, params }, res){
-    //    db.Stats.create(body)
-    //    .then((params.id) => return {
-        db.Add.findByIdAndUpdate(params.id,
+if (params.id) {
+    db.Workout.findByIdAndUpdate(params.id,
         {
             $push: { exercises: body }
             
@@ -14,29 +28,27 @@ router.put("/api/workouts/:id", function({ body, params }, res){
             res.json(data)}
         ).catch(err => {
             res.json(err)}
-    )} );
+    )
+} else {
+  let newWorkout = {
+        day: new Date().setDate(new Date().getDate()),
+        exercises: [ body ]
+      }
+    db.Workout.create(newWorkout).then((dbWorkouts => {
+        res.json(dbWorkouts);  
+      })).catch(err => {
+          res.json(err);
+      });
+}
+});
 
+     
+    //Add new exercises to a new workout plan.
     router.post("/api/workouts", ({ body }, res) => {
-        db.Add.create(body).then((dbWorkouts => {
-          res.json(dbWorkouts);  
-        })).catch(err => {
-            res.json(err);
-        });
+        
     });
 
-    module.exports = router;
-    
-    //Add new exercises to a new workout plan.
-    // async createWorkout(data = {}) {
-    //     const res = await fetch("/api/workouts", {
-    //       method: "POST",
-    //       body: JSON.stringify(data),
-    //       headers: { "Content-Type": "application/json" }
-    //     });
-    
-    //     const json = await res.json();
-    
-    //     return json;
-    //   },
 
+    module.exports = router;
+   
     //View the combined weight of multiple exercises on the `stats` page.
