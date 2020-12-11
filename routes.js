@@ -19,8 +19,9 @@ router.get("/api/workouts", ({ body }, res) => {
 
 //Add exercises to a previous workout plan.
 router.put("/api/workouts/:id", function({ body, params }, res){
-if (params.id) {
-    db.Workout.findByIdAndUpdate(params.id,
+    //    db.Stats.create(body)
+    //    .then((params.id) => return {
+        db.Workout.findByIdAndUpdate(params.id,
         {
             $push: { exercises: body }
             
@@ -28,24 +29,20 @@ if (params.id) {
             res.json(data)}
         ).catch(err => {
             res.json(err)}
-    )
-} else {
-  let newWorkout = {
-        day: new Date().setDate(new Date().getDate()),
-        exercises: [ body ]
-      }
-    db.Workout.create(newWorkout).then((dbWorkouts => {
-        res.json(dbWorkouts);  
-      })).catch(err => {
-          res.json(err);
-      });
-}
-});
+    )} );
 
      
     //Add new exercises to a new workout plan.
     router.post("/api/workouts", ({ body }, res) => {
-        
+        let newWorkout = {
+            day: new Date().setDate(new Date().getDate()-10),
+            exercises: body
+          }
+        db.Workout.create(newWorkout).then((dbWorkouts => {
+          res.json(dbWorkouts);  
+        })).catch(err => {
+            res.json(err);
+        });
     });
 
 
