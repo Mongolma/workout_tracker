@@ -19,8 +19,6 @@ router.get("/api/workouts", ({ body }, res) => {
 
 //Add exercises to a previous workout plan.
 router.put("/api/workouts/:id", function({ body, params }, res){
-    //    db.Stats.create(body)
-    //    .then((params.id) => return {
         db.Workout.findByIdAndUpdate(params.id,
         {
             $push: { exercises: body }
@@ -35,7 +33,7 @@ router.put("/api/workouts/:id", function({ body, params }, res){
     //Add new exercises to a new workout plan.
     router.post("/api/workouts", ({ body }, res) => {
         let newWorkout = {
-            day: new Date().setDate(new Date().getDate()-10),
+            day: new Date().setDate(new Date().getDate()),
             exercises: body
           }
         db.Workout.create(newWorkout).then((dbWorkouts => {
@@ -45,7 +43,13 @@ router.put("/api/workouts/:id", function({ body, params }, res){
         });
     });
 
+    //View the combined weight of multiple exercises on the `stats` page.
+    router.get("/api/workouts/range", ( req, res ) => {
+        db.Workout.find({}).then((dbWorkouts => {
+            res.json(dbWorkouts);  
+          })).catch(err => {
+              res.json(err);
+          });
+    });
 
     module.exports = router;
-   
-    //View the combined weight of multiple exercises on the `stats` page.
