@@ -3,6 +3,16 @@ const logger = require("morgan");
 // const { db } = require("./models/stats");
 const routes = require("./routes");
 const htmlRoutes = require("./htmlRoutes");
+const mongoose = require("mongoose");
+
+const DB_URL = process.env.MONGODB_URI || "mongodb://localhost/workout";
+
+mongoose.connect(DB_URL, {
+  useNewUrlParser: true,
+  useFindAndModify: false
+});
+
+
 const PORT = process.env.PORT || 3001;
 
 const app = express();

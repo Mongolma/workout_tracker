@@ -1,12 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-let mongoose = require("mongoose");
-let db = require("./models");
-mongoose.connect("mongodb://localhost/workout", {
-  useNewUrlParser: true,
-  useFindAndModify: false
-});
+
 
 //get last record
 router.get("/api/workouts", ({ body }, res) => {
@@ -32,6 +27,7 @@ router.put("/api/workouts/:id", function({ body, params }, res){
      
     //Add new exercises to a new workout plan.
     router.post("/api/workouts", ({ body }, res) => {
+      console.log("test");
         let newWorkout = {
             day: new Date().setDate(new Date().getDate()),
             exercises: body
